@@ -15,5 +15,25 @@ export function UserRepo<T extends Constructor<DataRepo>>(Base: T) {
                 description: userAttributes.description || ""
             });
         }
+        async updateUser(id:number,  userAttributes:{name?:string , email?:string , password?:string , specialization?:string , description?:string}) {
+            const userToUpdate = await this.getUserById(id);
+            if (!userToUpdate) {
+                throw new Error("User not found");
+            }else{
+                const definedAttributes = Object.fromEntries(
+                    Object.entries(userAttributes).filter(([_ , value]) => value !== undefined)
+                )
+                // you have to call save method to persist changes
+                userToUpdate.set(userAttributes);
+                await userToUpdate.save();
+                return userToUpdate;
+            }
         }
+        deleteUser(id:number){
+            return User.destroy({
+                where: { id }
+            })
+        }
+
+    }
 }

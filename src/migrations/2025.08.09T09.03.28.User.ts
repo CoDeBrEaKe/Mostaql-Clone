@@ -30,12 +30,12 @@ export const up: Migration =  async ({context:sequelize}) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            createdAt: {
+            created_at: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             },
-            updatedAt: {
+            updated_at: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue:Sequelize.literal('CURRENT_TIMESTAMP'),

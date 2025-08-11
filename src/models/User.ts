@@ -53,5 +53,7 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare created_at: CreationOptional<Date>;
   @UpdatedAt
   declare updated_at: CreationOptional<Date>;
-  
+  toJSON(){
+    return {...this.get(),created_at: Date.now(), updated_at:Date.now()};
+  }
 }

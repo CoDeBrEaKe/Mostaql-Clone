@@ -4,7 +4,6 @@ import morgan from 'morgan';
 // for cors
 import cors from 'cors';
 import { createRoutes } from "./routes";
-import { create } from 'domain';
 
 export const CreateServer = () => {
     const app = express();
