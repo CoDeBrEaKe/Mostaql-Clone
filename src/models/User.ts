@@ -4,14 +4,16 @@ import {
   HasMany, ForeignKey, BelongsTo, 
   CreatedAt,
   UpdatedAt,
+  IsEmail,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { InferAttributes , CreationOptional , InferCreationAttributes } from 'sequelize';
-
-import { Optional } from 'sequelize';
+import Notification from './Notification';
 
 @Table({
   tableName: 'users',
-  modelName:"User"
+  modelName:"User",
+  paranoid:true, // enables soft delete
 })
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   @Column({
@@ -21,10 +23,19 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   })
   // creationOptional<number> means that this field is optional during creation
   declare id: CreationOptional<number>
+
+  @AllowNull(false)
   @Column({
+    validate:{
+      len: [31, 50],
+    },
     type:DataType.STRING,
   })
-  declare name: string;
+  get name(): string {
+    // check if the name is not null or undefined
+    return this.getDataValue('name').toUpperCase()
+  }
+  // declare name: string;
   
 
   @Column({
@@ -38,11 +49,18 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   })
   declare specialization: string;
 
+  @AllowNull(false)
+  @IsEmail
   @Unique
   @Column({
     type: DataType.STRING
   })
-  declare email: string;
+  set email(value:string){
+    // setters don't return values and check null values
+    this.setDataValue('email',value.toLowerCase())
+  }
+  // declare email: string;
+
   @Column({
     type: DataType.STRING
   })
@@ -53,7 +71,14 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare created_at: CreationOptional<Date>;
   @UpdatedAt
   declare updated_at: CreationOptional<Date>;
+  @DeletedAt
+  declare deleted_at?: CreationOptional<Date>
+
+
+  @HasMany(() => Notification)
+  declare Notifications?: InferAttributes<Notification>[];
+
   toJSON(){
-    return {...this.get(),created_at: Date.now(), updated_at:Date.now()};
+    return {...this.get(),created_at: Date.now(), updated_at:Date.now() , deleted_at: undefined, password: undefined, Notifications: undefined,  };
   }
 }

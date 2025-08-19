@@ -13,7 +13,12 @@ export const userRoutes = (app:Express)=>{
         if (!user) {
             return res.status(404).json({message: "User not found"});
         }
-        res.json({user, message: "User fetched successfully"}); 
+        res.json({
+            user:{
+                ...user?.get(),
+                original_name:user?.getDataValue('name'),
+            }
+            , message: "User fetched successfully"}); 
         }
     )
     app.post("/users" , async(req:Request , res:Response)=>{

@@ -2,11 +2,12 @@ import { Sequelize } from "sequelize-typescript";
 import dotenv from "dotenv";
 dotenv.config();
 
+
 export default class DataRepo {
     sequelizeClient: Sequelize;
     defaultLimit = 10; // default limit for queries
     constructor() {
-        // connect to the database using the configuration from config.ts
+        // connect to the database using the configuration from config.ts (Connection pool)
         this.sequelizeClient = new Sequelize({
             host: process.env.DB_HOST,
             database: process.env.DB_DATABASE,
