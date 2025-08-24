@@ -2,44 +2,35 @@ import { DataTypes, Sequelize } from "sequelize";
 import type { Migration } from "../umzug";
 
 export const up: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().createTable("projects", {
+  await sequelize.getQueryInterface().createTable("freelancer", {
     id: {
-      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: true,
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    budget: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    // You Have to tell it is enum here
-    status: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    skills: {
-      type: DataTypes.JSON,
-      allowNull: false,
-    },
-
-    user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        // I Think the error will come from here
-        model: "users",
-      },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    password: {
+      type: DataTypes.STRING,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    speciality: {
+      type: DataTypes.STRING,
+    },
+    bio: {
+      type: DataTypes.STRING,
+    },
+    balance: {
+      type: DataTypes.DECIMAL,
+      defaultValue: 0.0,
+    },
+    available_bids: {
+      type: DataTypes.INTEGER,
+      defaultValue: 10,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -54,5 +45,5 @@ export const up: Migration = async ({ context: sequelize }) => {
   });
 };
 export const down: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().dropTable("projects");
+  await sequelize.getQueryInterface().dropTable("freelancers");
 };

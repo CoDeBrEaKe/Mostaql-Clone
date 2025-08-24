@@ -10,6 +10,7 @@ import {
   ForeignKey,
   AllowNull,
   BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import {
   CreationOptional,
@@ -17,6 +18,9 @@ import {
   InferCreationAttributes,
 } from "sequelize";
 import User from "./User";
+import Proposal from "./Proposal";
+import Category from "./Category";
+import Freelancer from "./Freelancer";
 
 @Table({
   tableName: "projects",
@@ -82,13 +86,34 @@ export default class Project extends Model<
   })
   declare user_id: number;
 
+  @ForeignKey(() => Category)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  declare category_id: number;
+
+  @ForeignKey(() => Freelancer)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  declare freelancer_id?: number;
+
   @CreatedAt
   declare created_at: CreationOptional<Date>;
   @UpdatedAt
   declare updated_at: CreationOptional<Date>;
 
+  @HasMany(() => Proposal)
+  declare proposals?: Proposal[];
+
   @BelongsTo(() => User)
-  declare owner: InferAttributes<User>;
+  declare owner?: InferAttributes<User>;
+
+  @BelongsTo(() => Category)
+  declare category?: InferAttributes<Category>;
+
+  @BelongsTo(() => Freelancer)
+  declare workon?: InferAttributes<Freelancer>;
 
   toJSON() {
     return {
