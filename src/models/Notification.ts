@@ -17,7 +17,7 @@ import {
   AutoIncrement,
 } from "sequelize-typescript";
 import User from "./User";
-import Freelancer from "./Freelancer";
+import Freelancer from "./FreelancerProfile";
 
 @Table({
   tableName: "notifications",
@@ -52,11 +52,6 @@ export default class Notification extends Model<
     type: DataType.STRING,
   })
   declare description: string;
-  @ForeignKey(() => Freelancer)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare freelancer_id?: number;
 
   @CreatedAt
   declare created_at?: CreationOptional<Date>;

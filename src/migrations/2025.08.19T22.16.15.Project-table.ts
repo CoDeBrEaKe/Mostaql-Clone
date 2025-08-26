@@ -31,7 +31,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
     },
 
-    user_id: {
+    client_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {

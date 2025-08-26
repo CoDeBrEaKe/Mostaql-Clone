@@ -15,7 +15,7 @@ import {
   InferCreationAttributes,
 } from "sequelize";
 import Project from "./Project";
-import Freelancer from "./Freelancer";
+import Freelancer from "./FreelancerProfile";
 
 export enum BidStatus {
   PENDING = "PENDING",

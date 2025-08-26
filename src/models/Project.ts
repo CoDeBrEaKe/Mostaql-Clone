@@ -20,7 +20,7 @@ import {
 import User from "./User";
 import Proposal from "./Proposal";
 import Category from "./Category";
-import Freelancer from "./Freelancer";
+import Freelancer from "./FreelancerProfile";
 
 @Table({
   tableName: "projects",
@@ -84,19 +84,13 @@ export default class Project extends Model<
   @Column({
     type: DataType.INTEGER,
   })
-  declare user_id: number;
+  declare client_id: number;
 
   @ForeignKey(() => Category)
   @Column({
     type: DataType.INTEGER,
   })
   declare category_id: number;
-
-  @ForeignKey(() => Freelancer)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare freelancer_id?: number;
 
   @CreatedAt
   declare created_at: CreationOptional<Date>;

@@ -14,6 +14,7 @@ import {
   UpdatedAt,
   IsEmail,
   DeletedAt,
+  HasOne,
 } from "sequelize-typescript";
 import {
   InferAttributes,
@@ -22,6 +23,7 @@ import {
 } from "sequelize";
 import Notification from "./Notification";
 import Project from "./Project";
+import FreelancerProfile from "./FreelancerProfile";
 
 @Table({
   tableName: "users",
@@ -39,6 +41,12 @@ export default class User extends Model<
   })
   // creationOptional<number> means that this field is optional during creation
   declare id: CreationOptional<number>;
+  @AllowNull(false)
+  @Column({
+    type: DataType.ENUM("client", "freelancer"),
+    defaultValue: "client",
+  })
+  declare user_type: string;
 
   @AllowNull(false)
   @Column({
@@ -80,7 +88,11 @@ export default class User extends Model<
     type: DataType.STRING,
   })
   declare password: string;
-
+  @Column({
+    type: DataType.DECIMAL,
+    defaultValue: 0.0,
+  })
+  declare balance: number;
   // Autmatically added by sequelize-typescript
   @CreatedAt
   declare created_at: CreationOptional<Date>;
@@ -93,7 +105,8 @@ export default class User extends Model<
   declare Notifications?: InferAttributes<Notification>[];
   @HasMany(() => Project)
   declare Project?: InferAttributes<Project>[];
-
+  @HasOne(() => FreelancerProfile)
+  declare profile: FreelancerProfile;
   toJSON() {
     return {
       ...this.get(),

@@ -2,12 +2,20 @@ import { DataTypes, Sequelize } from "sequelize";
 import type { Migration } from "../umzug";
 
 export const up: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().createTable("freelancer", {
+  await sequelize.getQueryInterface().createTable("freelancersprofiles", {
     id: {
       primaryKey: true,
       autoIncrement: true,
       allowNull: true,
       type: DataTypes.INTEGER,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "users",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     },
     email: {
       type: DataTypes.STRING,
@@ -23,10 +31,6 @@ export const up: Migration = async ({ context: sequelize }) => {
     },
     bio: {
       type: DataTypes.STRING,
-    },
-    balance: {
-      type: DataTypes.DECIMAL,
-      defaultValue: 0.0,
     },
     available_bids: {
       type: DataTypes.INTEGER,
@@ -45,5 +49,5 @@ export const up: Migration = async ({ context: sequelize }) => {
   });
 };
 export const down: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().dropTable("freelancers");
+  await sequelize.getQueryInterface().dropTable("freelancersprofiles");
 };

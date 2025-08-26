@@ -7,6 +7,7 @@ import {
   CreatedAt,
   UpdatedAt,
   Model,
+  BelongsTo,
 } from "sequelize-typescript";
 import {
   CreationOptional,
@@ -16,14 +17,15 @@ import {
 import Notification from "./Notification";
 import Proposal from "./Proposal";
 import Project from "./Project";
+import User from "./User";
 
 @Table({
-  modelName: "Freelancer",
-  tableName: "freelancers",
+  modelName: "FreelancerProfile",
+  tableName: "freelancersprofiles",
 })
-export default class Freelancer extends Model<
-  InferAttributes<Freelancer>,
-  InferCreationAttributes<Freelancer>
+export default class FreelancerProfile extends Model<
+  InferAttributes<FreelancerProfile>,
+  InferCreationAttributes<FreelancerProfile>
 > {
   @Column({
     primaryKey: true,
@@ -33,6 +35,11 @@ export default class Freelancer extends Model<
   })
   declare id: CreationOptional<number>;
 
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  declare user_id: number;
   @Column({
     type: DataType.STRING,
   })
@@ -53,11 +60,6 @@ export default class Freelancer extends Model<
     type: DataType.STRING,
   })
   declare bio: String;
-  @Column({
-    type: DataType.DECIMAL,
-    defaultValue: 0.0,
-  })
-  declare balance: number;
 
   @Column({
     type: DataType.INTEGER,
@@ -76,6 +78,8 @@ export default class Freelancer extends Model<
   declare proposals?: Proposal[];
   @HasMany(() => Project)
   declare projects?: Project[];
+  @BelongsTo(() => User)
+  declare user?: User;
 
   toJSON() {
     return {
