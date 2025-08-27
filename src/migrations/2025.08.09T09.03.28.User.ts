@@ -17,9 +17,19 @@ export const up: Migration =  async ({context:sequelize}) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            description: {
-                type: DataTypes.STRING,
-                allowNull: true,
+            user_type:{
+                type:DataTypes.ENUM("client" ,'freelancer'),
+                allowNull:false,
+                defaultValue:"client"
+            },
+            image_url:{
+                type:DataTypes.STRING,
+                allowNull:true,
+                defaultValue:""
+            },
+            balance: {
+                type: DataTypes.DECIMAL,
+                defaultValue:0.0
             },
             email: {
                 type: DataTypes.STRING,
