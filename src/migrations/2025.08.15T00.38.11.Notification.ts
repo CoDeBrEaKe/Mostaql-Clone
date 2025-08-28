@@ -34,7 +34,11 @@ export const up:Migration = async({context:sequelize}) => {
             allowNull: false,
             defaultValue: 0,
         },
-    
+        client_comment:{
+            type:DataTypes.TEXT,
+            allowNull:true,
+            defaultValue:"",
+        },
         created_at: {
             type: DataTypes.DATE,
             allowNull: false,
@@ -48,7 +52,7 @@ export const up:Migration = async({context:sequelize}) => {
     });
     await sequelize.getQueryInterface().addConstraint("ratings", {
     fields: ["prof_count" ,"com_count" , "exp_count" ,"time_count" ,"retention_count"],
-    
+
     type: "check",
     where: {
         prof_count: {
