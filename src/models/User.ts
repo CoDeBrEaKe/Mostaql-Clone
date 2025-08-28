@@ -21,9 +21,7 @@ import {
   CreationOptional,
   InferCreationAttributes,
 } from "sequelize";
-import Notification from "./Notification";
-import Project from "./Project";
-import FreelancerProfile from "./FreelancerProfile";
+import Rating from "./Rating";
 
 @Table({
   tableName: "users",
@@ -35,42 +33,44 @@ export default class User extends Model<
   InferCreationAttributes<User>
 > {
   @Column({
-    type: DataType.BIGINT,
+    type: DataType.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   })
-  // creationOptional<number> means that this field is optional during creation
   declare id: CreationOptional<number>;
-  @AllowNull(false)
-  @Column({
-    type: DataType.ENUM("client", "freelancer"),
-    defaultValue: "client",
-  })
-  declare user_type: string;
 
   @AllowNull(false)
   @Column({
-    validate: {
-      len: [31, 50],
-    },
     type: DataType.STRING,
+    validate: {
+      len: [3, 50],
+    },
   })
   get name(): string {
     // check if the name is not null or undefined
     return this.getDataValue("name").toUpperCase();
   }
   // declare name: string;
-
   @Column({
     type: DataType.STRING,
-    allowNull: true,
-  })
-  declare description: string;
-
-  @Column({
-    type: DataType.STRING,
+    validate: {
+      len: [3, 50],
+    },
   })
   declare specialization: string;
+  @AllowNull(true)
+  @Column({
+    type: DataType.ENUM("client", "freelancer"),
+    defaultValue: "client",
+  })
+  declare user_type: string;
+
+  @AllowNull(true)
+  @Column({
+    type: DataType.STRING,
+    defaultValue: "",
+  })
+  declare image_url: string;
 
   @AllowNull(false)
   @IsEmail
@@ -83,16 +83,19 @@ export default class User extends Model<
     this.setDataValue("email", value.toLowerCase());
   }
   // declare email: string;
-
   @Column({
     type: DataType.STRING,
   })
   declare password: string;
+
   @Column({
     type: DataType.DECIMAL,
     defaultValue: 0.0,
   })
-  declare balance: number;
+  declare balance: string;
+
+  @ForeignKey(() => Rating)
+  declare rating_id: number;
   // Autmatically added by sequelize-typescript
   @CreatedAt
   declare created_at: CreationOptional<Date>;
@@ -101,12 +104,9 @@ export default class User extends Model<
   @DeletedAt
   declare deleted_at?: CreationOptional<Date>;
 
-  @HasMany(() => Notification)
-  declare Notifications?: InferAttributes<Notification>[];
-  @HasMany(() => Project)
-  declare Project?: InferAttributes<Project>[];
-  @HasOne(() => FreelancerProfile)
-  declare profile: FreelancerProfile;
+  @HasOne(() => Rating)
+  declare ratings?: InferAttributes<Rating>[];
+
   toJSON() {
     return {
       ...this.get(),
