@@ -13,15 +13,12 @@ import {
   ForeignKey,
   Model,
   Table,
-  PrimaryKey,
-  AutoIncrement,
 } from "sequelize-typescript";
 import User from "./User";
-import Freelancer from "./FreelancerProfile";
 
 @Table({
-  tableName: "notifications",
   modelName: "Notification",
+  tableName: "notifications",
 })
 export default class Notification extends Model<
   InferAttributes<Notification>,
@@ -34,6 +31,7 @@ export default class Notification extends Model<
   })
   declare id: CreationOptional<number>;
 
+  @AllowNull(false)
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
@@ -62,14 +60,9 @@ export default class Notification extends Model<
   // new name for it
   declare notified?: InferAttributes<User>;
 
-  @BelongsTo(() => Freelancer)
-  declare notifiedf?: InferAttributes<Freelancer>;
   toJSON() {
     return {
       ...this.get(),
-      user_id: undefined,
-      created_at: undefined,
-      updated_at: undefined,
     };
   }
 }

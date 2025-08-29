@@ -1,6 +1,5 @@
 import { DataTypes, Sequelize } from "sequelize";
 import type { Migration } from "../umzug";
-import sequelize from "sequelize";
 
 export const up: Migration = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable("categories", {
@@ -10,7 +9,7 @@ export const up: Migration = async ({ context: sequelize }) => {
       primaryKey: true,
       allowNull: true,
     },
-    category: {
+    category_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },

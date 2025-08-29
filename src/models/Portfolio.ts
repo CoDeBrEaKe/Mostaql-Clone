@@ -5,7 +5,6 @@ import {
   ForeignKey,
   Model,
   BelongsTo,
-  Unique,
 } from "sequelize-typescript";
 import {
   CreationOptional,
@@ -15,38 +14,54 @@ import {
 import User from "./User";
 
 @Table({
-  modelName: "FreelancerProfile",
-  tableName: "freelancersprofiles",
+  modelName: "Portfolio",
+  tableName: "portfolios",
 })
-export default class FreelancerProfile extends Model<
-  InferAttributes<FreelancerProfile>,
-  InferCreationAttributes<FreelancerProfile>
+export default class Portfolio extends Model<
+  InferAttributes<Portfolio>,
+  InferCreationAttributes<Portfolio>
 > {
   @Column({
     primaryKey: true,
     autoIncrement: true,
     type: DataType.INTEGER,
+    allowNull: true,
   })
   declare id: CreationOptional<number>;
 
-  @Unique("unique_user_id")
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
   })
-  declare user_id: number;
+  declare freelancer_id: number;
 
   @Column({
     type: DataType.STRING,
     defaultValue: "",
   })
-  declare bio: String;
+  declare title: String;
+
+  @Column({
+    type: DataType.STRING,
+    defaultValue: "",
+  })
+  declare description: String;
+  @Column({
+    type: DataType.STRING,
+    defaultValue: "",
+  })
+  declare image_url: String;
 
   @Column({
     type: DataType.INTEGER,
-    defaultValue: 10,
+    defaultValue: 0,
   })
-  declare available_bids: number;
+  declare likes: number;
+  @Column({
+    type: DataType.INTEGER,
+    defaultValue: 0,
+  })
+  declare views: number;
 
   @BelongsTo(() => User)
   declare user: User;

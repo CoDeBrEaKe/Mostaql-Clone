@@ -11,6 +11,7 @@ import {
   AllowNull,
   BelongsTo,
   HasMany,
+  HasOne,
 } from "sequelize-typescript";
 import {
   CreationOptional,
@@ -20,7 +21,7 @@ import {
 import User from "./User";
 import Proposal from "./Proposal";
 import Category from "./Category";
-import Freelancer from "./FreelancerProfile";
+import Contract from "./Contract";
 
 @Table({
   tableName: "projects",
@@ -36,7 +37,7 @@ export default class Project extends Model<
     type: DataType.INTEGER,
   })
   declare id: CreationOptional<number>;
-
+  // This might give error
   @AllowNull(false)
   @Column({
     validate: {
@@ -57,7 +58,7 @@ export default class Project extends Model<
 
   @AllowNull(false)
   @Column({
-    type: DataType.ENUM("OPEN", "CLOSED", "DONE", "PENDING"),
+    type: DataType.ENUM("OPEN", "CLOSED"),
   })
   declare status: string;
 
@@ -78,43 +79,39 @@ export default class Project extends Model<
     type: DataType.JSON,
     allowNull: false,
   })
-  declare skills: string[];
-
-  @ForeignKey(() => User)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare client_id: number;
-
+  declare skills: Record<string, any>;
+  @AllowNull(false)
   @ForeignKey(() => Category)
   @Column({
     type: DataType.INTEGER,
   })
   declare category_id: number;
 
+  @AllowNull(false)
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  declare client_id: number;
+
   @CreatedAt
   declare created_at: CreationOptional<Date>;
-  @UpdatedAt
-  declare updated_at: CreationOptional<Date>;
+
+  @HasOne(() => Contract)
+  declare contract?: InferAttributes<Contract>;
 
   @HasMany(() => Proposal)
-  declare proposals?: Proposal[];
+  declare proposals?: InferAttributes<Proposal>[];
 
   @BelongsTo(() => User)
-  declare owner?: InferAttributes<User>;
+  declare owner: InferAttributes<User>;
 
   @BelongsTo(() => Category)
-  declare category?: InferAttributes<Category>;
-
-  @BelongsTo(() => Freelancer)
-  declare workon?: InferAttributes<Freelancer>;
+  declare category: InferAttributes<Category>;
 
   toJSON() {
     return {
       ...this.get(),
-      user_id: undefined,
-      created_at: undefined,
-      updated_at: undefined,
     };
   }
 }

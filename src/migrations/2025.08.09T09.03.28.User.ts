@@ -50,6 +50,10 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
       defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
+    deleted_at: {
+      type: DataTypes.DATE,
+      defaultValue: null,
+    },
   });
 };
 

@@ -15,18 +15,18 @@ import {
   InferCreationAttributes,
 } from "sequelize";
 import Project from "./Project";
-import Freelancer from "./FreelancerProfile";
+import User from "./User";
 
 export enum BidStatus {
   PENDING = "PENDING",
-  CLOSED = "CLOSED",
+  ACCEPTED = "ACCEPTED",
   AWAY = "AWAY",
   AVAILABLE = "AVAILABLE",
 }
 
 @Table({
-  tableName: "proposals",
   modelName: "Proposal",
+  tableName: "proposals",
 })
 export default class Proposal extends Model<
   InferAttributes<Proposal>,
@@ -37,7 +37,7 @@ export default class Proposal extends Model<
     type: DataType.INTEGER,
     autoIncrement: true,
   })
-  declare id: number;
+  declare id: CreationOptional<number>;
 
   @Column({
     type: DataType.DECIMAL,
@@ -70,14 +70,16 @@ export default class Proposal extends Model<
   @ForeignKey(() => Project)
   @Column({
     type: DataType.INTEGER,
+    unique: "unique_freelancer_project",
   })
   declare project_id: number;
 
-  @ForeignKey(() => Freelancer)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
+    unique: "unique_freelancer_project",
   })
-  declare freelancer_id?: number;
+  declare freelancer_id: number;
 
   @CreatedAt
   declare created_at: CreationOptional<Date>;
@@ -85,11 +87,11 @@ export default class Proposal extends Model<
   declare updated_at: CreationOptional<Date>;
 
   @BelongsTo(() => Project)
-  declare project: Project;
+  declare project?: Project;
 
-  @BelongsTo(() => Freelancer)
-  declare freelancer?: Freelancer;
+  @BelongsTo(() => User)
+  declare freelancer: User;
   toJSON() {
-    return { ...this.get(), created_at: undefined, updated_at: undefined };
+    return { ...this.get() };
   }
 }

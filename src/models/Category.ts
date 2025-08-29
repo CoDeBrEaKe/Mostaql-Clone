@@ -28,7 +28,7 @@ export default class Category extends Model<
     type: DataType.STRING,
     allowNull: false,
   })
-  declare category: string;
+  declare category_name: string;
 
   @HasMany(() => Project)
   declare projects?: InferAttributes<Project>[];
@@ -36,7 +36,6 @@ export default class Category extends Model<
   toJSON() {
     return {
       ...this.get(),
-      id: undefined,
     };
   }
 }

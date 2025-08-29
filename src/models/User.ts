@@ -22,6 +22,13 @@ import {
   InferCreationAttributes,
 } from "sequelize";
 import Rating from "./Rating";
+import FreelancerProfile from "./FreelancerProfile";
+import Portfolio from "./Portfolio";
+import Notification from "./Notification";
+import Project from "./Project";
+import Contract from "./Contract";
+import Proposal from "./Proposal";
+import Conversation from "./Conversation";
 
 @Table({
   tableName: "users",
@@ -95,7 +102,7 @@ export default class User extends Model<
   declare balance: string;
 
   @ForeignKey(() => Rating)
-  declare rating_id: number;
+  declare rating_id?: number;
   // Autmatically added by sequelize-typescript
   @CreatedAt
   declare created_at: CreationOptional<Date>;
@@ -104,17 +111,27 @@ export default class User extends Model<
   @DeletedAt
   declare deleted_at?: CreationOptional<Date>;
 
-  @HasOne(() => Rating)
-  declare ratings?: InferAttributes<Rating>[];
-
+  @BelongsTo(() => Rating)
+  declare rating?: InferAttributes<Rating>;
+  @HasOne(() => FreelancerProfile)
+  declare profile?: InferAttributes<FreelancerProfile>;
+  @HasMany(() => Portfolio)
+  declare portfolio?: InferAttributes<FreelancerProfile>[];
+  @HasMany(() => Proposal)
+  declare proposals?: InferAttributes<Proposal>[];
+  @HasMany(() => Notification)
+  declare notifications: InferAttributes<Notification>[];
+  @HasMany(() => Project)
+  declare projects?: InferAttributes<Project>[];
+  @HasMany(() => Conversation)
+  declare conversation?: InferAttributes<Conversation>[];
+  @HasOne(() => Contract)
+  declare freelancer?: InferAttributes<Contract>;
+  @HasOne(() => Contract)
+  declare client?: InferAttributes<Contract>;
   toJSON() {
     return {
       ...this.get(),
-      created_at: Date.now(),
-      updated_at: Date.now(),
-      deleted_at: undefined,
-      password: undefined,
-      Notifications: undefined,
     };
   }
 }
