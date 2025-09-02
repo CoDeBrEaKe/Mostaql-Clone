@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
 import repository from "../sequelize";
+import User from "../models/User";
 
 export const userRoutes = (app: Express) => {
   app.get("/users", async (req: Request, res: Response) => {
@@ -34,7 +35,17 @@ export const userRoutes = (app: Express) => {
       });
     }
   });
+  app.post("/login", async (req: Request, res: Response) => {
+    const userData = req.body;
 
+    const user = await repository.loginUser(userData);
+    if (!user) {
+      return res.status(401).json({ message: "Email or Password Is Wrong" });
+    }
+    res
+      .status(200)
+      .json({ user: user, message: "User logged in successfully" });
+  });
   app.put("/users/:id", async (req: Request, res: Response) => {
     const reqAttributes = req.body;
     const userId = parseInt(req.params.id);

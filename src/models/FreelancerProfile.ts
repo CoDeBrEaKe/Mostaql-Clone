@@ -72,12 +72,7 @@ export default class FreelancerProfile extends Model<
   @UpdatedAt
   declare updated_at: CreationOptional<Date>;
 
-  @HasMany(() => Notification)
-  declare notifications?: Notification[];
-  @HasMany(() => Proposal)
-  declare proposals?: Proposal[];
-  @HasMany(() => Project)
-  declare projects?: Project[];
+
   @BelongsTo(() => User)
   declare user?: User;
 

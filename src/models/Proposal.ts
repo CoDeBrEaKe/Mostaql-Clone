@@ -16,6 +16,7 @@ import {
 } from "sequelize";
 import Project from "./Project";
 import Freelancer from "./FreelancerProfile";
+import User from "./User";
 
 export enum BidStatus {
   PENDING = "PENDING",
@@ -73,7 +74,7 @@ export default class Proposal extends Model<
   })
   declare project_id: number;
 
-  @ForeignKey(() => Freelancer)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
   })
@@ -87,8 +88,8 @@ export default class Proposal extends Model<
   @BelongsTo(() => Project)
   declare project: Project;
 
-  @BelongsTo(() => Freelancer)
-  declare freelancer?: Freelancer;
+  @BelongsTo(() => User)
+  declare freelancer?: User;
   toJSON() {
     return { ...this.get(), created_at: undefined, updated_at: undefined };
   }

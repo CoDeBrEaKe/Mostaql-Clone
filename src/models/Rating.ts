@@ -1,5 +1,6 @@
 import { InferAttributes , InferCreationAttributes , CreationOptional } from "sequelize";
-import { Model  , HasOne, Table, Column, PrimaryKey, DataType, AllowNull, CreatedAt} from "sequelize-typescript";
+import { Model  , HasOne, Table, Column, PrimaryKey, DataType, AllowNull, CreatedAt, BelongsTo} from "sequelize-typescript";
+import User from "./User";
 
 @Table({
     modelName:"Rating",
@@ -70,6 +71,9 @@ export default class Rating  extends Model<InferAttributes<Rating> , InferCreati
 
     @CreatedAt
     declare created_at:CreationOptional<Date>
+
+    @HasOne(()=>User)
+    declare user:User;
 
      toJSON() {
         return {

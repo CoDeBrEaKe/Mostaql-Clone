@@ -22,6 +22,9 @@ import {
   InferCreationAttributes,
 } from "sequelize";
 import Rating from "./Rating";
+import Notification from "./Notification";
+import Proposal from "./Proposal";
+import Project from "./Project";
 
 @Table({
   tableName: "users",
@@ -63,14 +66,14 @@ export default class User extends Model<
     type: DataType.ENUM("client", "freelancer"),
     defaultValue: "client",
   })
-  declare user_type: string;
+  declare user_type?: string;
 
   @AllowNull(true)
   @Column({
     type: DataType.STRING,
     defaultValue: "",
   })
-  declare image_url: string;
+  declare image_url?: string;
 
   @AllowNull(false)
   @IsEmail
@@ -92,10 +95,10 @@ export default class User extends Model<
     type: DataType.DECIMAL,
     defaultValue: 0.0,
   })
-  declare balance: string;
+  declare balance?: number;
 
   @ForeignKey(() => Rating)
-  declare rating_id: number;
+  declare rating_id?: number;
   // Autmatically added by sequelize-typescript
   @CreatedAt
   declare created_at: CreationOptional<Date>;
@@ -103,8 +106,13 @@ export default class User extends Model<
   declare updated_at: CreationOptional<Date>;
   @DeletedAt
   declare deleted_at?: CreationOptional<Date>;
-
-  @HasOne(() => Rating)
+  @HasMany(() => Notification)
+  declare notifications?: Notification[];
+  @HasMany(() => Proposal)
+  declare proposals?: Proposal[];
+  @HasMany(() => Project)
+  declare projects?: Project[];
+  @BelongsTo(() => Rating)
   declare ratings?: InferAttributes<Rating>[];
 
   toJSON() {

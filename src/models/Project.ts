@@ -106,8 +106,8 @@ export default class Project extends Model<
   @BelongsTo(() => Category)
   declare category?: InferAttributes<Category>;
 
-  @BelongsTo(() => Freelancer)
-  declare workon?: InferAttributes<Freelancer>;
+  @BelongsTo(() => User)
+  declare workon?: InferAttributes<User>;
 
   toJSON() {
     return {
