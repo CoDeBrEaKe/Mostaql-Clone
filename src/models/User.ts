@@ -70,14 +70,14 @@ export default class User extends Model<
     type: DataType.ENUM("client", "freelancer"),
     defaultValue: "client",
   })
-  declare user_type: string;
+  declare user_type?: string;
 
   @AllowNull(true)
   @Column({
     type: DataType.STRING,
     defaultValue: "",
   })
-  declare image_url: string;
+  declare image_url?: string;
 
   @AllowNull(false)
   @IsEmail
