@@ -1,15 +1,15 @@
 import Category from "../models/Category";
+import Project from "../models/Project";
 import DataRepo, { Constructor } from "./dataRepo";
 export function CategoryRepo<T extends Constructor<DataRepo>>(Base: T) {
   return class extends Base {
     getCategories() {
-      return Category.findAll();
+      return Category.findAll({ include: [{ model: Project }] });
     }
     getCategory(id: number) {
       return Category.findByPk(id);
     }
-    createCategories(categoryAttributes: { category: string }) {
-      console.log(categoryAttributes);
+    createCategories(categoryAttributes: { category_name: string }) {
       return Category.create(categoryAttributes);
     }
     async getCategoryProducts(id: number) {
@@ -17,9 +17,7 @@ export function CategoryRepo<T extends Constructor<DataRepo>>(Base: T) {
       if (!category) {
         throw new Error("No Category Found");
       }
-      return category.$get("projects" as keyof Category, {
-        limit: this.defaultLimit,
-      });
+      return Category.findAll({ include: [{ model: Project }] });
     }
   };
 }

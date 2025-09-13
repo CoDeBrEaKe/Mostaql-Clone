@@ -99,7 +99,7 @@ export default class User extends Model<
     type: DataType.DECIMAL,
     defaultValue: 0.0,
   })
-  declare balance: string;
+  declare balance: number;
 
   @ForeignKey(() => Rating)
   declare rating_id?: number;
@@ -120,7 +120,7 @@ export default class User extends Model<
   @HasMany(() => Proposal)
   declare proposals?: InferAttributes<Proposal>[];
   @HasMany(() => Notification)
-  declare notifications: InferAttributes<Notification>[];
+  declare notifications?: InferAttributes<Notification>[];
   @HasMany(() => Project)
   declare projects?: InferAttributes<Project>[];
   @HasMany(() => Conversation)

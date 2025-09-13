@@ -86,7 +86,7 @@ export default class Contract extends Model<
   @BelongsTo(() => Rating)
   declare rating: Rating;
   @BelongsTo(() => Project)
-  declare project: project;
+  declare project: Project;
   @BelongsTo(() => User)
   declare client: User;
   @BelongsTo(() => User)
@@ -103,7 +103,6 @@ export default class Contract extends Model<
   toJSON() {
     return {
       ...this.get(),
-      id: undefined,
     };
   }
 }

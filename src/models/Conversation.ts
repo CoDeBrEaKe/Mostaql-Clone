@@ -45,7 +45,7 @@ export default class Conversation extends Model<
   })
   declare freelancer_id: number;
   @AllowNull(false)
-  @ForeignKey(() => User)
+  @ForeignKey(() => Project)
   @Column({
     type: DataType.INTEGER,
     unique: "unique_freelancer_client_conversation",
